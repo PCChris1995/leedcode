@@ -112,4 +112,4 @@ for i in range(len(df)):
     dr = [datestring,float(df.iloc[i,1]),float(df.iloc[i,2]),float(df.iloc[i,3]),float(df.iloc[i,4]),float(df.iloc[i,5]),float(df.iloc[i,6])]
     insert_daily_data_into_db('1', '1', dr)
 
- 
+print("test modify")
