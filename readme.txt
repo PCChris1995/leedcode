@@ -1,6 +1,4 @@
-build the readme.txt just for test the funcion of git..
-change "a" to "the"
-
-create a new branch "dev"
+## leedcode刷题相关代码
+`Link list.py`: 链表相干程序
 
 
