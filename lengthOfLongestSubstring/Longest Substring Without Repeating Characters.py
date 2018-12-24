@@ -20,13 +20,17 @@ class Solution(object):
 #            str_dict[str1] = index
 #            max_len = max(max_len, index+1-begin)
 #        return max_len
-        d, a, m = {}, 0, 0
-        for i, c in enumerate(s):
-          if c in d and d[c] >= a:
-            a = d[c] 
-          m = max(m,  i - a)
-          d[c] = i
-        return m
+        dict1 = {}
+        result = 0
+        for index, letter in enumerate(s):
+            if letter in dict1:
+                a = dict1[letter]
+                num = index - a
+                if result < num:
+                    result = num
+                    str1 = s[a:index]
+            dict1[letter] = index
+        return result, str1
             
 
 def stringToString(input):
@@ -55,5 +59,5 @@ def main():
             break
 
 if __name__ == '__main__':
-    length = Solution().lengthOfLongestSubstring('abcdfa')
-    print(length)
+    length, str1 = Solution().lengthOfLongestSubstring('adgatadf')
+    print(length, str1)
