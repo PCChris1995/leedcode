@@ -398,6 +398,37 @@ class Solution(object):
             len1, len2 = len1-1, len2-1
         if carry: return '1' + res
         return res 
+
+    
+    def threeSumClosest(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: int
+        https://leetcode-cn.com/problems/3sum-closest/
+        """
+        value = 99999999999
+        for i in range(len(nums)):
+            sum = target - nums[i]
+            left = i + 1
+            right = len(nums) - 1
+            while left < right:
+                if abs(sum - nums[left] - nums[right]) < value:
+                    value = abs(sum-nums[left]-nums[right])
+                    result = [nums[i], nums[left], nums[right]]
+                while left < right and nums[left] == nums[left+1]:
+                    left += 1
+                while left < right and nums[right] == nums[right-1]:
+                    right -= 1
+                left += 1
+                right -= 1
+            if sum > nums[left] + nums[right]:
+                left += 1
+            if sum < nums[left] + nums[right]:
+                right -= 1
+
+        return result 
+
             
         
 
@@ -425,6 +456,6 @@ if __name__ == "__main__":
     # result = aa.countAndSay(3)
     # lst = [-1,0,1,2,-1,-4]
     # result = aa.fourSum(lst, -1)
-    result = aa.addStrings('1234', '23535')
+    result = aa.addStrings([-1，2，1，-4], target=1)
     print(result)
         
