@@ -429,6 +429,156 @@ class Solution(object):
 
         return result 
 
+    
+    def permute(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: List[List[int]]
+        """
+        def helper(nums, index):
+            if index == len(nums):
+                print(nums)
+            for i in range(index, len(nums)):
+                nums[i], nums[index] = nums[index], nums[i]
+                helper(nums, index+1)
+                nums[i], nums[index] = nums[index], nums[i]
+        helper(nums, 0)
+
+
+    def permute1(self, nums):
+        lst = [[]]
+        for _ in nums:
+            res = []
+            for val in nums:
+                for sub_lst in lst:
+                    if val in sub_lst:
+                        continue
+                    tmp_lst = copy.deepcopy(sub_lst)
+                    tmp_lst.append(val)
+                    res.append(tmp_lst)
+            lst = res 
+        return res
+
+    
+    def rotate(self, matrix):
+        """
+        :type matrix: List[List[int]]
+        :rtype: None Do not return anything, modify matrix in-place instead.
+        https://leetcode-cn.com/problems/rotate-image/
+        """
+        for i in range(len(matrix) // 2):
+            matrix[i], matrix[len(matrix)-i-1] = matrix[len(matrix)-i-1], matrix[i]
+        for i in range(len(matrix)):
+            for j in range(i, len(matrix[0])):
+                matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
+        return matrix 
+
+    def firstMissingPositive(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        https://leetcode-cn.com/problems/first-missing-positive/comments/
+        """
+        tmp = copy.deepcopy(nums)
+        for i in range(len(nums)):
+            if nums[i] > 0 and nums[i] <= len(nums):
+                tmp[nums[i]-1] = nums[i]
+        for i in range(len(tmp)):
+            if tmp[i]-1 != i:
+                return i+1
+        return len(nums)+1
+
+
+    def firstMissingPositive1(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        https://leetcode-cn.com/problems/first-missing-positive/comments/
+        """
+        for i in range(len(nums)-1):
+            while nums[i] > 0 and nums[i] <= len(nums) and nums[i] != nums[nums[i]-1]:
+                tmp = nums[nums[i]-1]
+                nums[nums[i]-1] = nums[i]
+                nums[i] = tmp
+                # nums[i], nums[nums[i]-1] = nums[nums[i]-1], nums[i]
+        for i in range(len(nums)):
+            if nums[i] != i+1:
+                return i + 1
+        return len(nums)+1
+
+
+    def FastSort(self, nums, first, last):
+        """快排"""
+        if first > last:
+            return 
+        mid_val = nums[first]
+        high = last
+        low = first 
+        while low < high:
+            while low < high and mid_val <= nums[high]:
+                high -= 1
+            nums[low] = nums[high]
+            while low < high and mid_val > nums[low]:
+                low += 1
+            nums[high] = nums[low]
+        nums[low] = mid_val
+        self.FastSort(nums, first, low-1)
+        self.FastSort(nums, low+1, last)
+        
+    def MergerSort(self, nums):
+        """归并排序"""
+        def sort(left_nums, right_nums):
+            lst = []
+            length1 = len(left_nums)
+            length2 = len(right_nums)
+            i, j = 0, 0
+            while length1 > i and length2 > j:
+                if left_nums[i] >= right_nums[j]:
+                    lst.append(right_nums[j])
+                    j += 1
+                else:
+                    lst.append(left_nums[i])
+                    i += 1
+            if j == length2 and i < length1:
+                for k in range(i, length1):
+                    lst.append(left_nums[k])
+            if i == length1 and j < length2:
+                for m in range(j, length1):
+                    lst.append(right_nums[m])
+            return lst 
+
+        if len(nums) <= 1:
+            return nums
+        mid_index = len(nums) // 2
+        left_nums = nums[ :mid_index]
+        right_nums = nums[mid_index: ]
+        return sort(self.MergerSort(left_nums), self.MergerSort(right_nums))
+
+    def HeapSort(self, nums):
+        """堆排序"""
+        def adjust_heap(heap, len_heap, root):
+            left = 2*root+1
+            right = left + 1
+            larger = root
+            if left < len_heap and heap[left] > heap[larger]:
+                larger = left 
+            if right < len_heap and heap[right] > heap[larger]:
+                larger = right
+            if root != larger:
+                heap[root], heap[larger] = heap[larger], heap[root]
+                adjust_heap(heap, len_heap, larger)
+        
+        def build_max_heap(heap):
+            for i in range((len(heap)-2)//2, -1, -1):
+                adjust_heap(heap, len(heap), i)
+
+        build_max_heap(nums)
+        for i in range(len(nums)-1, -1, -1):
+            nums[0], nums[i] = nums[i], nums[0]
+            adjust_heap(nums, i, 0)
+
+                
+
             
         
 
@@ -456,6 +606,9 @@ if __name__ == "__main__":
     # result = aa.countAndSay(3)
     # lst = [-1,0,1,2,-1,-4]
     # result = aa.fourSum(lst, -1)
-    result = aa.addStrings([-1，2，1，-4], target=1)
-    print(result)
+    # result = aa.addStrings([-1，2，1，-4], target=1)
+    nums = [1,34,6,7,2,56,8,9]
+    # aa.FastSort(nums, 0, len(nums)-1)
+    aa.HeapSort(nums)
+    print(nums)
         
