@@ -1,3 +1,18 @@
+class TreeNode(object):
+    """创建二叉树结点"""
+    def __init__(self, x):
+        self.val = x
+        self.right = None
+        self.left = None
+
+
+class LinkNode(object):
+    """链表"""
+    def __init__(self, x):
+        self.val = x
+        self.next = None 
+
+
 class Solution(object):
     def myAtoi(self, str):
         """
@@ -577,10 +592,42 @@ class Solution(object):
             nums[0], nums[i] = nums[i], nums[0]
             adjust_heap(nums, i, 0)
 
-                
 
+    def VerifySquenceOfBST(self, sequence):
+        # write code here
+        if not sequence:
+            return True
+        last_val = sequence[-1]
+        index = 0
+        while index < len(sequence)-1:
+            if sequence[index] < last_val:
+                index += 1 
+            else:
+                break 
+        for i in range(index, len(sequence)-1):
+            if sequence[i] < last_val:
+                return False
+        length = len(sequence) - 1
+        return self.VerifySquenceOfBST(sequence[:index]) and self.VerifySquenceOfBST(sequence[index:length])
             
-        
+          
+    
+    def FindPath(self, root, expectNumber):
+        # write code here
+        import copy
+        result = []
+        item = []
+        def helper(root, expectNumber):
+            if not root:
+                return 
+            item.append(root.val)
+            if sum(item) == expectNumber:
+                result.append(copy.deepcopy(item))
+            helper(root.left, expectNumber)
+            item.pop()
+            helper(root.right, expectNumber)
+        helper(root, expectNumber)
+               
 
 
 
@@ -607,8 +654,8 @@ if __name__ == "__main__":
     # lst = [-1,0,1,2,-1,-4]
     # result = aa.fourSum(lst, -1)
     # result = aa.addStrings([-1，2，1，-4], target=1)
-    nums = [1,34,6,7,2,56,8,9]
+    # nums = [1,34,6,7,2,56,8,9]
     # aa.FastSort(nums, 0, len(nums)-1)
-    aa.HeapSort(nums)
-    print(nums)
-        
+    # aa.HeapSort(nums)
+    # print(nums)
+    aa.VerifySquenceOfBST([1,2,3,4,10,11,12,13,9])
