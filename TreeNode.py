@@ -23,6 +23,41 @@ class TreeNodeFun(object):
         root.right = self.RebuildTree(pre_lst[index+1:], mid_lst[index+1:])
         return root  
 
+    def LeftestNode(self, head):
+        """得到二叉树每行最左边的结点"""
+        colum_list = []
+        lst = []
+        result = []
+        lst.append(head)
+        result.append([])
+        while lst or colum_list:
+            if not lst:
+                result.append([])
+                lst = colum_list
+                colum_list = []
+            node = lst.pop(0)
+            if node.left:
+                colum_list.append(node.left)
+            if node.right != None:
+                colum_list.append(node.right)
+            result[-1].append(node.val)
+        length = len(result)
+        aa = []
+        for i in range(length):
+            aa.append(result[i][0])
+        return aa 
+
+    def list_2_tree(self, lst, index):
+        """根据列表重建二叉树"""
+        if index > len(lst) - 1:
+            return None 
+        node = TreeNode(lst[index])
+        if 2*index+1 <= len(lst):
+            node.left = self.list_2_tree(lst, 2*index+1)
+        if 2*index+1+1 <= len(lst):
+            node.right = self.list_2_tree(lst, 2*index+1+1)
+        return node 
+
     def last_find(self, head, digui=True):
         """
         二叉树的后序遍历
