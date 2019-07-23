@@ -174,11 +174,33 @@ class TreeNodeFun(object):
                 + self.last_sort(str1[str2.index(str1[0])+1:], str2[str2.index(str1[0])+1:]) + str1[0:1]
 
 
-pre = ['A', 'B', 'D', 'C', 'E', 'F']
-mid = ['D', 'B', 'A', 'E', 'C', 'F']
-last = ['D', 'B', 'E', 'F', 'C', 'A']
+    def right_first_one(self, head):
+        lst = []
+        lst1 = []
+        tmp_lst = []
+        lst.append(head)
+        while lst:
+            tmp_lst.append([])
+            for node in  lst:
+                tmp_lst[-1].append(node.val)
+                if node.left:
+                    lst1.append(node.left)
+                if node.right:
+                    lst1.append(node.right)
+            lst = lst1
+            lst1 = []
+        result = []
+        for val in tmp_lst:
+            result.append(val[-1])
+        return result
+
+
+# pre = ['A', 'B', 'D', 'C', 'E', 'F']
+# mid = ['D', 'B', 'A', 'E', 'C', 'F']
+# last = ['D', 'B', 'E', 'F', 'C', 'A']
+pre = ['a', 'b', 'd', 'None', 'None', 'e', 'None', 'c', 'f', 'g']
 aa = TreeNodeFun()
-head  = aa.RebuildTree(pre, mid)
+head  = aa.list_2_tree(pre, 0)
 # print(pre_sort(last, mid))
-print(aa.Hierachy_find(head))
+print(aa.right_first_one(head))
 
