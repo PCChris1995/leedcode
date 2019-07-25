@@ -3,6 +3,7 @@ class TreeNode(object):
         self.val = x
         self.left = None
         self.right = None 
+        self.next = None 
 
 
 class TreeNodeFun(object):
@@ -24,7 +25,7 @@ class TreeNodeFun(object):
         return root  
 
     def LeftestNode(self, head):
-        """得到二叉树每行最左边的结点"""
+        """得到二叉树的左视图"""
         colum_list = []
         lst = []
         result = []
@@ -144,7 +145,6 @@ class TreeNodeFun(object):
                 stack.append(curr.right)
         return lst 
 
-
     def pre_sort(self, str1, str2):
         """
         利用中序遍历和后序遍历得到前序遍历
@@ -175,6 +175,9 @@ class TreeNodeFun(object):
 
 
     def right_first_one(self, head):
+        """
+        得到二叉树的右视图
+        """
         lst = []
         lst1 = []
         tmp_lst = []
@@ -194,13 +197,70 @@ class TreeNodeFun(object):
             result.append(val[-1])
         return result
 
+    def GetNext(self, pNode):
+        """
+        得到二叉树中序遍历的下一个结点
+        """
+        if not pNode:
+            return None 
+        if pNode.right:
+            node = pNode.right
+            while node.left:
+                node = node.left 
+            return node.next 
+        else:
+            node = pNode
+            while node.next:
+                if node.next.left == node:
+                    return node.next 
+                node = node.next 
 
-# pre = ['A', 'B', 'D', 'C', 'E', 'F']
-# mid = ['D', 'B', 'A', 'E', 'C', 'F']
-# last = ['D', 'B', 'E', 'F', 'C', 'A']
-pre = ['a', 'b', 'd', 'None', 'None', 'e', 'None', 'c', 'f', 'g']
-aa = TreeNodeFun()
-head  = aa.list_2_tree(pre, 0)
-# print(pre_sort(last, mid))
-print(aa.right_first_one(head))
+    def isSymmetrical(self, pRoot):
+        # write code here
+        """
+        判断二叉树是否为镜像二叉树
+        """
+        def helper(left_node, right_node):
+            if not left_node and not right_node:
+                return True 
+            if left_node and right_node and left_node.val == right_node.val:
+                return helper(left_node.left, right_node.right) and helper(left_node.right, right_node.left)
+            else:
+                return False 
+        if not pRoot:
+            return False
+        return helper(pRoot.left, pRoot.right)
+
+
+def Serialize(root):
+    # write code here
+    lst = []
+    lst1 = []
+    lst1.append(root)
+    while lst1 and list(set(lst1)) != ['#']:
+        node = lst1.pop(0)
+        if node == '#':
+            lst.append('#')
+        else:
+            lst.append(node.val)
+        if node != '#' and node.left:
+            lst1.append(node.left)
+        else:
+            lst1.append('#')
+        if node != '#' and node.right:
+            lst1.append(node.right)
+        else:
+            lst1.append('#')
+    return lst
+
+              
+if __name__ == "__main__":
+    # pre = ['A', 'B', 'D', 'C', 'E', 'F']
+    # mid = ['D', 'B', 'A', 'E', 'C', 'F']
+    # last = ['D', 'B', 'E', 'F', 'C', 'A']
+    pre = ['8', '6', '6', None, '5', '7', '7', '5']
+    aa = TreeNodeFun()
+    head  = aa.list_2_tree(pre, 0)
+    # print(pre_sort(last, mid))
+    print(Serialize(head))
 
