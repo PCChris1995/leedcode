@@ -610,7 +610,6 @@ class Solution(object):
         length = len(sequence) - 1
         return self.VerifySquenceOfBST(sequence[:index]) and self.VerifySquenceOfBST(sequence[index:length])
             
-          
     
     def FindPath(self, root, expectNumber):
         # write code here
@@ -627,6 +626,22 @@ class Solution(object):
             item.pop()
             helper(root.right, expectNumber)
         helper(root, expectNumber)
+
+
+    def build_dict(self, d):
+        d2 = dict()
+        for key, val in d.items():
+            def helper(lst, index, val):
+                if index >= len(lst):
+                    return val 
+                d2[lst[index]] = helper(lst, index+1, val)
+                return d2[lst[index]] 
+            tmp = helper(key.split('.'), 0, val)
+            print(tmp)
+            
+
+
+
                
 
 
@@ -658,4 +673,6 @@ if __name__ == "__main__":
     # aa.FastSort(nums, 0, len(nums)-1)
     # aa.HeapSort(nums)
     # print(nums)
-    aa.VerifySquenceOfBST([1,2,3,4,10,11,12,13,9])
+    # aa.VerifySquenceOfBST([1,2,3,4,10,11,12,13,9])
+    d = {'cc.d.e.f': 4}
+    aa.build_dict(d)
