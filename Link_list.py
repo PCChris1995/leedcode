@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Sun Dec 16 16:27:26 2018
-
+"""链表相关代码"""
 @author: pengchen
 """
 
@@ -69,6 +69,61 @@ def add_test(header, data):
         header = header.next
     header.next = node
     return header
+
+def link_quick_sort(node):
+  """链表快排"""
+  def part(pbegin, pend):
+    val = pbegin.val
+    p = pbegin 
+    q = p.next 
+    while q:
+      if q.val < val:
+        p = p.next 
+        p.val, q.val = q.val, p.val
+      q = q.next 
+    p.val, pbegin.val = pbegin.val, p.val 
+    return p
+
+  def quick_sort(pbegin, pend):
+    if pbegin != pend:
+      partition = part(pbegin, pend)
+      quick_sort(pbegin, partition)
+      quick_sort(partition.next, pend)
+  quick_sort(node, None)
+  return node 
+
+
+class Solution:
+    """不交换值的链表快排"""
+    def sortList(self, head: ListNode) -> ListNode:
+        if head == None or head.next == None:
+            return head
+        leftH = ListNode(0)
+        resL = leftH
+        rightH = ListNode(0)
+        resR = rightH
+        midNode = head
+        head = head.next
+        while head != None:
+            if head.val < midNode.val:
+                leftH.next = head
+                leftH = leftH.next
+            else:
+                rightH.next = head
+                rightH =rightH.next
+            head = head.next
+        leftH.next = None
+        rightH.next = None
+        L = self.sortList(resL.next)
+        R = self.sortList(resR.next)
+        midNode.next = R
+        if L == None:
+            return midNode
+        tmp = L
+        while tmp.next != None:
+            tmp = tmp.next
+        tmp.next = midNode
+        return L
 
 l1 = ListNode(0)    
 ListNode_1 = ListNode_handle()
