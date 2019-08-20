@@ -252,15 +252,28 @@ def Serialize(root):
         else:
             lst1.append('#')
     return lst
+    
 
+def tree_sum(node, s):
+    """
+    求父节点到子节点形成的数之和
+    """
+    if not node:
+        return 
+    s += str(node.val)
+    tree_sum(node.left, s)
+    tree_sum(node.right, s)
+    if not node.left and not node.right:
+        result.append(s)
+    s = s[:-1]
               
 if __name__ == "__main__":
-    # pre = ['A', 'B', 'D', 'C', 'E', 'F']
-    # mid = ['D', 'B', 'A', 'E', 'C', 'F']
-    # last = ['D', 'B', 'E', 'F', 'C', 'A']
-    pre = ['8', '6', '6', None, '5', '7', '7', '5']
+    pre = ['A', 'B', 'D', 'C', 'E', 'F']
+    mid = ['D', 'B', 'A', 'E', 'C', 'F']
+    last = ['D', 'B', 'E', 'F', 'C', 'A']
+    # pre = ['8', '6', '6', None, '5', '7', '7', '5']
     aa = TreeNodeFun()
-    head  = aa.list_2_tree(pre, 0)
-    # print(pre_sort(last, mid))
-    print(Serialize(head))
+    head = aa.RebuildTree(pre, mid)
+    print(pre_path(head))
+    # print(Serialize(head))
 
